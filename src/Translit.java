@@ -53,7 +53,7 @@ public class Translit {
 		charTable[37] = "Ts";
 		charTable[38] = "Ch";
 		charTable[39] = "Sh";
-		charTable[40] = "Sh";
+		charTable[40] = "Sсh";
 		charTable[41] = "'";
 		charTable[42] = "Y";
 		charTable[43] = "'";

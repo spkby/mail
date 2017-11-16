@@ -1,22 +1,19 @@
-
-
-/*
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-*/
+
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Set;
 
 public class Sender {
 
-	private String message_recip, message_cc1, message_cc2, message_cc3, stmp_host, message_from;
+	private String message_recip, stmp_host, message_from;
+	private String[] cc;
 	public String message_subject, message_body;
-//	protected Session session;
-//	protected Message mesg;
+	protected Session session;
+	protected Message mesg;
 
 	public Sender() {
 		fill();
@@ -29,12 +26,8 @@ public class Sender {
 			properties.load(new FileReader("mail.properties"));
 
 			message_recip = properties.getProperty("recip");
-			message_subject = "";
-			message_cc1 = properties.getProperty("cc1");
-			message_cc2 = properties.getProperty("cc2");
-			message_cc3 = properties.getProperty("cc3");
-			message_body = "";
-
+			String tmp = properties.getProperty("cc");
+			cc = tmp.split(",");
 			stmp_host = properties.getProperty("stmp_host");
 			message_from = properties.getProperty("from");
 
@@ -47,7 +40,7 @@ public class Sender {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", stmp_host);
 
-		/*
+
 		session = Session.getDefaultInstance(props, null);
 		session.setDebug(true);
 		try {
@@ -55,14 +48,16 @@ public class Sender {
 			mesg.setFrom(new InternetAddress(message_from));
 			InternetAddress toAddress = new InternetAddress(message_recip);
 			mesg.addRecipient(javax.mail.Message.RecipientType.TO, toAddress);
-			InternetAddress ccAddress1 = new InternetAddress(message_cc1);
-			mesg.addRecipient(javax.mail.Message.RecipientType.CC, ccAddress1);
-			InternetAddress ccAddress2 = new InternetAddress(message_cc2);
-			mesg.addRecipient(javax.mail.Message.RecipientType.CC, ccAddress2);
-			InternetAddress ccAddress3 = new InternetAddress(message_cc3);
-			mesg.addRecipient(javax.mail.Message.RecipientType.CC, ccAddress3);
+
+			for (int i = 0; i < cc.length; i++) {
+				InternetAddress address = new InternetAddress(cc[i]);
+				mesg.addRecipient(javax.mail.Message.RecipientType.CC, address);
+			}
+
 			mesg.setSubject(message_subject);
 			mesg.setText(message_body);
+
+
 			Transport.send(mesg);
 		}
 		catch(MessagingException ex) {
@@ -70,6 +65,6 @@ public class Sender {
 				ex.printStackTrace();
 			}
 		}
-		*/
+
 	}
 }
