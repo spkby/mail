@@ -16,10 +16,10 @@ public class Sender {
 	protected Message mesg;
 
 	public Sender() {
-		fill();
+		readProperties();
 	}
 
-	private void fill(){
+	private void readProperties(){
 
 		Properties properties = new Properties();
 		try {
